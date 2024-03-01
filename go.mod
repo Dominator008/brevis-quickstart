@@ -65,3 +65,5 @@ require (
 )
 
 replace github.com/consensys/gnark => github.com/celer-network/gnark v0.0.0-20240204054508-d08e3ed6bd9f
+
+// replace github.com/brevis-network/brevis-sdk => ../brevis-sdk

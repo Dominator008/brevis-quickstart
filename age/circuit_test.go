@@ -1,11 +1,12 @@
 package age
 
 import (
+	"math/big"
+	"testing"
+
 	"github.com/brevis-network/brevis-sdk/sdk"
 	"github.com/brevis-network/brevis-sdk/test"
 	"github.com/ethereum/go-ethereum/common"
-	"math/big"
-	"testing"
 )
 
 func TestCircuit(t *testing.T) {
@@ -13,11 +14,12 @@ func TestCircuit(t *testing.T) {
 	check(err)
 
 	contractAddress := common.HexToAddress("0xc944E90C64B2c07662A292be6244BDf05Cda44a7")
-	
+
 	app.AddStorage(sdk.StorageData{
-		BlockNum: big.NewInt(17800140),
-		Address: contractAddress,
-		Key: common.HexToHash("0xc2679997147cc711ecb6f1a090ddd97a89dfba7e3a04a3fb325563573f6fed21"),
+		BlockNum: big.NewInt(19342663),
+		Address:  contractAddress,
+		Key:      common.HexToHash("0x55ccb1b16b10b19d498a335426da71059f3255a84a320fe81c2a761e2cc095d0"),
+		Value:    common.HexToHash("0x0000000000000000000000000000000000000000000000252248deb6e6940000"),
 	})
 
 	guest := &AppCircuit{}

@@ -3,12 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
+	"math/big"
+	"path/filepath"
+
 	"github.com/brevis-network/brevis-quickstart/age"
 	"github.com/brevis-network/brevis-sdk/sdk"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
-	"math/big"
-	"path/filepath"
 )
 
 var mode = flag.String("mode", "", "compile or prove")
@@ -33,12 +33,13 @@ func compile() {
 	// This first part is copied from app/circuit_test.go. We added the source data, then we generated the circuit input.
 	app, err := sdk.NewBrevisApp()
 	check(err)
-	
+
 	app.AddStorage(sdk.StorageData{
 		BlockNum: big.NewInt(19341097),
-		Address: contractAddress,
-		Key: common.BytesToHash(crypto.Keccak256(common.HexToHash("0x55ccb1b16b10b19d498a335426da71059f3255a84a320fe81c2a761e2cc095d0").Bytes())),
-		Value: common.HexToHash("0x252248DEB6E6940000"),
+		Address:  contractAddress,
+		Key:      common.HexToHash("0x55ccb1b16b10b19d498a335426da71059f3255a84a320fe81c2a761e2cc095d0"),
+		// Value:    common.HexToHash("0x0000000000000000000000000000000000000000000000252248deb6e6940000"),
+		Value: common.HexToHash("0x252248deb6e6940000"),
 	})
 	appCircuit := &age.AppCircuit{}
 
@@ -89,17 +90,18 @@ func prove() {
 	fmt.Println(common.HexToHash(*slotNum))
 
 	app.AddStorage(sdk.StorageData{
-		BlockNum: big.NewInt(19341097), //17800140
-		Address: contractAddress,
-		Key: common.BytesToHash(crypto.Keccak256(common.HexToHash("0x55ccb1b16b10b19d498a335426da71059f3255a84a320fe81c2a761e2cc095d0").Bytes())),
-		Value: common.HexToHash("0x252248DEB6E6940000"),
+		BlockNum: big.NewInt(19341097),
+		Address:  contractAddress,
+		Key:      common.HexToHash("0x55ccb1b16b10b19d498a335426da71059f3255a84a320fe81c2a761e2cc095d0"),
+		// Value:    common.HexToHash("0x0000000000000000000000000000000000000000000000252248deb6e6940000"),
+		Value: common.HexToHash("0x252248deb6e6940000"),
 	})
 
 	appCircuit := &age.AppCircuit{}
 	appCircuitAssignment := &age.AppCircuit{}
 
 	// Prove
-	fmt.Println(">> Proving the transaction using my circuit")
+	fmt.Println(">> Proving the storage slot using my circuit")
 	circuitInput, err := app.BuildCircuitInput(appCircuit)
 	check(err)
 	witness, publicWitness, err := sdk.NewFullWitness(appCircuitAssignment, circuitInput)
